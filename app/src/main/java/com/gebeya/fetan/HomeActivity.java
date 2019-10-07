@@ -1,5 +1,9 @@
 package com.gebeya.fetan;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,11 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.gebeya.fetan.framework.base.BaseActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class HomeActivity extends BaseActivity {
 
@@ -22,6 +28,9 @@ public class HomeActivity extends BaseActivity {
 
     @BindView(R.id.homeNoRunsLabel)
     TextView noRunsLabel;
+
+    @BindView(R.id.homeAnimationView)
+    LottieAnimationView speed;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +43,29 @@ public class HomeActivity extends BaseActivity {
             final Intent intent = new Intent(getApplicationContext(), AddRunActivity.class);
             startActivity(intent);
         });
+
+        Animator fabAnimation = (AnimatorSet) AnimatorInflater.loadAnimator(this, R.animator.fab_animation);
+        fabAnimation.setTarget(fab);
+        fabAnimation.start();
+
+        ObjectAnimator animator =
+                ObjectAnimator.ofFloat(noRunsLabel, "alpha", 0f, 1f);
+        animator.setDuration(1000);
+        animator.setStartDelay(400);
+        animator.start();
+
+        //startActivity(new Intent(this, AboutActivity.class));
+
     }
+
+    /*
+    @OnClick(R.id.homeAnimationView)
+    public void goCrazy()
+    {
+        final float factor = 0.1F;
+        float speed = view.getSpeed() + factor;
+        view.setSpeed(1);
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
